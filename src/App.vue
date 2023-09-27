@@ -1,32 +1,45 @@
 
 <template>
-  <AppMenu v-bind:popupAddTask="showPopupAddTask" @popupTask="showPopupTask"/>
-  <AppPopup v-model:show="showPopupAddTask">
-    <AppTaskFormAdd @createTask="addTask"/>
+  <AppMenu v-bind:popupAddTask="popupAddTask" v-bind:popupLoginUp="popupLoginUp" @showPopupLoginUp="showPopupLoginUp"
+    @showPopupAddTask="showPopupAddTask" />
+  <AppPopup v-model:show="popupAddTask">
+    <AppFormTaskAdd @createTask="addTask" />
+  </AppPopup>
+  <AppPopup v-model:show="popupLoginUp">
+    <AppFormLoginUp @createNewUser="addNewUser"/>
   </AppPopup>
 </template>
 
 <script lang="ts">
 import AppMenu from "./components/AppMenu.vue"
-import AppTaskFormAdd from "./components/AppTaskFormAdd.vue";
+import AppFormTaskAdd from "./components/AppFormTaskAdd.vue";
+import AppFormLoginUp from "./components/AppFormLoginUp.vue"
 import Task from './types/Task'
+import NewUser from "./types/NewUser";
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   data() {
     return {
-      showPopupAddTask: false,
+      popupAddTask: false,
+      popupLoginUp: false
     }
   },
-  components: { AppMenu, AppTaskFormAdd },
+  components: { AppMenu, AppFormTaskAdd, AppFormLoginUp },
   methods: {
     addTask(task: Task) {
-      console.log(task) 
-      this.showPopupAddTask = false
+      console.log(task)
+      this.popupAddTask = false
     },
-    showPopupTask() {
-      console.log("afsdf")
-      this.showPopupAddTask = true
+    addNewUser(newUser: NewUser) {
+      console.log(newUser)
+      this.popupLoginUp = false
+    },
+    showPopupAddTask() {
+      this.popupAddTask = true
+    },
+    showPopupLoginUp() {
+      this.popupLoginUp = true
     }
   }
 })
@@ -46,4 +59,5 @@ export default defineComponent({
 
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
-}</style>
+}
+</style>

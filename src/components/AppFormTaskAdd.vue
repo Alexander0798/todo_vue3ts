@@ -1,9 +1,9 @@
 <template>
-    <form class="form" @submit.prevent>
+    <form class="form" @submit.prevent="create">
         <AppInput class="form__input" type="text" v-model="task.description" />
         <AppInput class="form__input" type="date" v-model="task.deadlineDate" />
         <AppInput class="form__input" type="time" v-model="task.deadlineTime" />
-        <AppButton class="form__button" @click="create">Создать задачу</AppButton>
+        <AppButton class="form__button">Создать задачу</AppButton>
     </form>
 </template>
 

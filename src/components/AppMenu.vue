@@ -1,8 +1,10 @@
 <template>
     <div class="menu">
-        <AppButton class="menu__button-add" v-bind:popupAddTask="popupAddTask" @click="showPopupAddTask" >Добавить задачу</AppButton>
+        <AppButton class="menu__button-add" v-bind:popupAddTask="popupAddTask" @click="showPopupAddTask">Добавить задачу
+        </AppButton>
         <div class="menu__container">
-            <AppButton class="menu__button-login--up">Зарегистрироваться</AppButton>
+            <AppButton class="menu__button-login--up" v-bind:popupLoginUp="popupLoginUp" @click="showPopupLoginUp">
+                Зарегистрироваться</AppButton>
             <AppButton class="menu__button-login--in">Войти</AppButton>
         </div>
     </div>
@@ -15,13 +17,21 @@ export default defineComponent({
         popupAddTask: {
             type: Boolean,
             default: false
+        },
+        popupLoginUp: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {
         showPopupAddTask() {
-            this.$emit("popupTask", true)
+            this.$emit("showPopupAddTask", true)
+        },
+        showPopupLoginUp() {
+            this.$emit("showPopupLoginUp", true)
         }
-    }
+    },
+
 })
 </script>
 <style lang="scss">
