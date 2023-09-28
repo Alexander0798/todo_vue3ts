@@ -1,11 +1,11 @@
 <template>
     <div class="menu">
-        <AppButton class="menu__button-add" v-bind:popupAddTask="popupAddTask" @click="showPopupAddTask">Добавить задачу
+        <AppButton class="menu__button-add" @click="showPopupAddTask">Добавить задачу
         </AppButton>
         <div class="menu__container">
-            <AppButton class="menu__button-login--up" v-bind:popupLoginUp="popupLoginUp" @click="showPopupLoginUp">
+            <AppButton class="menu__button-sign--up" @click="showPopupSignUp">
                 Зарегистрироваться</AppButton>
-            <AppButton class="menu__button-login--in">Войти</AppButton>
+            <AppButton class="menu__button-sign--in" @click="showPopupSignIn">Войти</AppButton>
         </div>
     </div>
 </template>
@@ -13,22 +13,15 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    props: {
-        popupAddTask: {
-            type: Boolean,
-            default: false
-        },
-        popupLoginUp: {
-            type: Boolean,
-            default: false
-        }
-    },
     methods: {
         showPopupAddTask() {
             this.$emit("showPopupAddTask", true)
         },
-        showPopupLoginUp() {
-            this.$emit("showPopupLoginUp", true)
+        showPopupSignUp() {
+            this.$emit("showPopupSignUp", true)
+        },
+        showPopupSignIn() {
+            this.$emit("showPopupSignIn", true)
         }
     },
 

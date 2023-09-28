@@ -17,10 +17,11 @@ export default defineComponent({
 </script>
 <style scoped>
 .button {
-  min-width: 40px;
-  min-height: 20px;
-  border: 1px solid rebeccapurple;
-  border-radius: 20px;
-  padding: 5px 10px;
+
+}
+.disabled {
+  cursor: not-allowed;
+  border: 1px solid #cccc;
+  background-color: #cccc;
 }
 </style>

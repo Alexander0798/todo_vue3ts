@@ -1,5 +1,5 @@
 export default interface Task {
-    id: Number,
+    id: String,
     description: String,
     deadlineDate: String,
     deadlineTime: String

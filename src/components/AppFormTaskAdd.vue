@@ -1,17 +1,20 @@
 <template>
-    <form class="form" @submit.prevent="create">
-        <AppInput class="form__input" type="text" v-model="task.description" />
-        <AppInput class="form__input" type="date" v-model="task.deadlineDate" />
-        <AppInput class="form__input" type="time" v-model="task.deadlineTime" />
-        <AppButton class="form__button">Создать задачу</AppButton>
-    </form>
+    <AppForm class="form" @submit.prevent="create">
+        <textarea class="form__textarea" @input="getValueTextarea(($event.target as HTMLInputElement).value)"></textarea>
+        <div class="form__container">
+            <AppInput class="form__input" type="date" v-model="task.deadlineDate" />
+            <AppInput class="form__input" type="time" v-model="task.deadlineTime" />
+        </div>
+        <AppButton class="form__button" :class="!formValid() ? 'disabled' : ''" :disabled="!formValid()">Создать задачу
+        </AppButton>
+    </AppForm>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent} from 'vue'
+
 import Task from '../types/Task'
 import TaskState from '../types/TaskState'
-
 
 export default defineComponent({
     data(): TaskState {
@@ -23,10 +26,18 @@ export default defineComponent({
             }
         }
     },
+
     methods: {
+        formValid(): Boolean {
+            return Boolean(this.task.description.length > 5)
+        },
+        getValueTextarea(value: any): String {
+            return this.task.description = value
+
+        },
         create() {
             this.$emit('createTask', {
-                id: Date.now(),
+                id: String(Date.now()),
                 ...this.task
             })
             this.task = {
@@ -37,6 +48,7 @@ export default defineComponent({
         },
 
     },
+   
     emits: {
         createTask: (task: Task) => task
     }
@@ -47,11 +59,16 @@ export default defineComponent({
 
 <style lang="scss">
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px 0;
+    &__textarea {
+        resize: none;
+        min-height: 100px;
+        outline: none;
+    }
 
-    &__input {}
+    &__container {
+        display: flex;
+        gap: 0 20px;
+    }
 
     &__button {}
 }

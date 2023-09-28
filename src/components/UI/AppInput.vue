@@ -1,5 +1,5 @@
 <template>
-    <input :value="modelValue" @input="updateInput" type={{type}} class="input" >
+    <input :value="modelValue" @input="updateInput(($event.target as HTMLInputElement).value)" type={{type}} class="input" >
 </template>
 
 <script lang="ts">
@@ -11,8 +11,8 @@ props: {
     modelValue: [String, Number]
 },
 methods: {
-    updateInput(evt: any) {
-        this.$emit("update:modelValue", evt.target.value)
+    updateInput(value: String) {
+        this.$emit("update:modelValue", value)
     }
 }
 })
@@ -20,5 +20,8 @@ methods: {
 </script>
 
 <style lang="scss">
-
+ .input {
+    outline: none;
+    padding: 6px ;
+ }
 </style>

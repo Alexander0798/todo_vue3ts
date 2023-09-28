@@ -30,6 +30,7 @@ export default defineComponent({
 .popup {
     display: flex;
     position: fixed;
+    z-index: 10;
     top: 0;
     bottom: 0;
     left: 0;
@@ -41,7 +42,6 @@ export default defineComponent({
         background: white;
         border-radius: 20px;
         min-width: 320px;
-        min-height: 200px;
         padding: 20px;
         box-sizing: border-box;
     }

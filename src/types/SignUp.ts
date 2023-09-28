@@ -1,8 +1,8 @@
 interface NewUser {
     name: string,
-    login: string,
+    email: string,
     password: string
 }
-export default interface NewUserState {
+export default interface SignUp {
     newUser: NewUser
 }
