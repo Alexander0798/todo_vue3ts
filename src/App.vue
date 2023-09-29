@@ -2,43 +2,60 @@
 <template>
   <AppMenu @showPopupSignUp="showPopupSignUp" @showPopupAddTask="showPopupAddTask" @showPopupSignIn="showPopupSignIn" />
   <AppPopup v-model:show="popupAddTask">
-    <AppFormTaskAdd @createTask="addTask" />
+    <AppFormTaskAdd name="app-form-task-add" @createTask="addTask" />
   </AppPopup>
   <AppPopup v-model:show="popupSignUp">
-    <AppFormSignUp @signUp="signUp" />
+    <AppFormSignUp name="app-form-sign-up" @signUp="signUp" />
   </AppPopup>
   <AppPopup v-model:show="popupSignIn">
-    <AppFormSignIn @signIn="signIn" />
+    <AppFormSignIn name="app-form-sign-in" @signIn="signIn" />
   </AppPopup>
-  <AppTaskList :tasks="tasks" @removeTask="removeTask"/>
+  <AppPopup v-model:show="popupEditTask">
+    <AppFormTaskEdit name="app-form-task-edit" @editTask="editTask" v-bind:taskEdit="taskEdit"/>
+  </AppPopup>
+  <AppTaskList :tasks="tasks" @removeTask="removeTask" @showPopupEditTask="showPopupEditTask"/>
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
 import AppMenu from "./components/AppMenu.vue"
 import AppFormTaskAdd from "./components/AppFormTaskAdd.vue";
 import AppFormSignUp from "./components/AppFormSignUp.vue"
 import AppFormSignIn from "./components/AppFormSignIn.vue"
+import AppTaskList from "./components/AppTaskList.vue";
+import AppFormTaskEdit from "./components/AppFormTaskEdit.vue";
 import Task from './types/Task'
 import SignUp from './types/SignUp'
 import SignIn from "./types/SignIn";
 import AppState from "./types/AppState"
-import { defineComponent } from 'vue'
-import AppTaskList from "./components/AppTaskList.vue";
+
 export default defineComponent({
   data(): AppState {
     return {
       tasks: [],
+      taskEdit: {
+        description: '',
+        deadlineDate: '',
+        deadlineTime: '',
+        id: ''
+      },
+      popupEditTask: false,
       popupAddTask: false,
       popupSignUp: false,
       popupSignIn: false,
     }
   },
-  components: { AppMenu, AppFormTaskAdd, AppFormSignUp, AppFormSignIn, AppTaskList },
+  components: { AppMenu, AppFormTaskAdd, AppFormSignUp, AppFormSignIn, AppTaskList, AppFormTaskEdit },
   methods: {
     addTask(task: Task) {
       console.log(task)
       this.tasks.push(task)
       this.popupAddTask = false
+    },
+    editTask(task: Task) {
+      this.removeTask(task.id)
+      this.tasks.push(task)
+      this.popupEditTask = false
     },
     removeTask(id: String) {
       this.tasks = this.tasks.filter(task => task.id !== id)
@@ -59,7 +76,12 @@ export default defineComponent({
     },
     showPopupSignIn() {
       this.popupSignIn = true
-    }
+    },
+    showPopupEditTask(id: String) {
+     const targetTask = JSON.parse(JSON.stringify(this.tasks.find(task => task.id === id)))
+      this.taskEdit = {...targetTask}
+      this.popupEditTask = true
+    },
   }
 })
 </script>

@@ -1,14 +1,7 @@
 <template>
-    <AppForm name="sign-in" @submit.prevent="create">
-        <AppInputContainer>
-            <AppInput class="form__input" type="email" placeholder="Введите email" v-model="user.email" /><span
-                class="form_error">Не корректный Email</span>
-        </AppInputContainer>
-        <AppInputContainer>
-            <AppInput class="form__input" type="password" placeholder="Введите пароль" v-model="user.password" /><span
-                class="form_error">Минимальная длина пароля 5 символов</span>
-        </AppInputContainer>
-
+    <AppForm @submit.prevent="create">
+        <AppInput class="form__input" type="email" placeholder="Введите email" v-model="user.email" />
+        <AppInput class="form__input" type="password" placeholder="Введите пароль" v-model="user.password" />
         <AppButton class="form__button" :class="!formValid() ? 'disabled' : ''" :disabled="!formValid()">Войти</AppButton>
     </AppForm>
 </template>

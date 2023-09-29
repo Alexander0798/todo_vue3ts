@@ -5,7 +5,7 @@
             task.deadlineTime }}</span><button class="task__button-complete button">Выполнить</button></div>
 
         <button class="task__button task__button-remove" @click="removeTask"></button>
-        <button class="button task__button task__button-edit"></button>
+        <button class="button task__button task__button-edit" @click="showPopupEditTask"></button>
     </li>
 </template>
 
@@ -23,10 +23,14 @@ export default defineComponent({
     methods: {
         removeTask() {
             this.$emit("removeTask", this.task.id)
+        },
+        showPopupEditTask() {
+            this.$emit("showPopupEditTask", this.task.id)
         }
     },
     emits: {
-        removeTask: (id: String) => String(id)
+        removeTask: (id: String) => String(id),
+        showPopupEditTask: (id: String) => String(id),
     }
 })
 
