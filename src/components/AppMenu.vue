@@ -1,13 +1,14 @@
 <template>
-    <div class="menu">
-        <AppButton class="menu__button-add" @click="showPopupAddTask">Добавить задачу
+    <header class="header">
+        <AppButton class="header__button-add" @click="showPopupAddTask">Добавить задачу
         </AppButton>
-        <div class="menu__container">
-            <AppButton class="menu__button-sign--up" @click="showPopupSignUp">
+        <h1 class="header__title">Супер Задачи</h1>
+        <div class="header__container">
+            <AppButton class="header__button-sign--up" @click="showPopupSignUp">
                 Зарегистрироваться</AppButton>
-            <AppButton class="menu__button-sign--in" @click="showPopupSignIn">Войти</AppButton>
+            <AppButton class="header__button-sign--in" @click="showPopupSignIn">Войти</AppButton>
         </div>
-    </div>
+    </header>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -28,10 +29,17 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
-.menu {
+.header {
     display: flex;
     justify-content: space-between;
-
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    &__title {
+        margin: 0;
+        font-size: 32px;
+    }
     &__button-add {}
 
     &__container {

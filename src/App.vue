@@ -13,6 +13,7 @@
   <AppPopup v-model:show="popupEditTask">
     <AppFormTaskEdit name="app-form-task-edit" @editTask="editTask" v-bind:taskEdit="taskEdit"/>
   </AppPopup>
+  <AppNavigation/>
   <AppTaskList :tasks="tasks" @removeTask="removeTask" @showPopupEditTask="showPopupEditTask"/>
 </template>
 
@@ -24,6 +25,7 @@ import AppFormSignUp from "./components/AppFormSignUp.vue"
 import AppFormSignIn from "./components/AppFormSignIn.vue"
 import AppTaskList from "./components/AppTaskList.vue";
 import AppFormTaskEdit from "./components/AppFormTaskEdit.vue";
+import AppNavigation from './components/AppNavigation.vue';
 import Task from './types/Task'
 import SignUp from './types/SignUp'
 import SignIn from "./types/SignIn";
@@ -45,7 +47,7 @@ export default defineComponent({
       popupSignIn: false,
     }
   },
-  components: { AppMenu, AppFormTaskAdd, AppFormSignUp, AppFormSignIn, AppTaskList, AppFormTaskEdit },
+  components: { AppMenu, AppFormTaskAdd, AppFormSignUp, AppFormSignIn, AppTaskList, AppFormTaskEdit, AppNavigation },
   methods: {
     addTask(task: Task) {
       console.log(task)

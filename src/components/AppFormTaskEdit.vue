@@ -6,7 +6,7 @@
             <AppInput class="form__input" type="date" v-model="task.deadlineDate" :value="task.deadlineDate" />
             <AppInput class="form__input" type="time" v-model="task.deadlineTime" :value="task.deadlineTime" />
         </div>
-        <AppButton class="form__button" :class="!formValid() ? 'disabled' : ''" :disabled="!formValid()">Создать задачу
+        <AppButton class="form__button" :class="!formValid() ? 'disabled' : ''" :disabled="!formValid()">Изменить задачу
         </AppButton>
     </AppForm>
 </template>
@@ -35,7 +35,10 @@ export default defineComponent({
     },
     methods: {
         formValid(): Boolean {
-            return Boolean(this.task.description.length > 5)
+            if (this.task.description !== this.taskEdit.description || this.task.deadlineDate !== this.taskEdit.deadlineDate || this.task.deadlineTime !== this.taskEdit.deadlineTime) {
+                return true
+            }
+            return false
         },
         getValueTextarea(value: any): String {
             return this.task.description = value

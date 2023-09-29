@@ -1,6 +1,6 @@
 <template>
     <AppForm class="form" @submit.prevent="create">
-        <textarea class="form__textarea" @input="getValueTextarea(($event.target as HTMLInputElement).value)"></textarea>
+        <textarea class="form__textarea" @input="getValueTextarea(($event.target as HTMLInputElement).value)" placeholder="ВВедите текст задачи"></textarea>
         <div class="form__container">
             <AppInput class="form__input" type="date" v-model="task.deadlineDate" />
             <AppInput class="form__input" type="time" v-model="task.deadlineTime" />
