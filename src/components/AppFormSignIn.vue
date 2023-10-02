@@ -1,7 +1,7 @@
 <template>
     <AppForm @submit.prevent="create">
         <AppInput class="form__input" type="email" placeholder="Введите email" v-model="user.email" />
-        <AppInput class="form__input" type="password" placeholder="Введите пароль" v-model="user.password" />
+        <AppInput class="form__input" type="password" placeholder="Введите пароль" autocomplete="on" v-model="user.password" />
         <AppButton class="form__button" :class="!formValid() ? 'disabled' : ''" :disabled="!formValid()">Войти</AppButton>
     </AppForm>
 </template>

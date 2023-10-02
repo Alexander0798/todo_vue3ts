@@ -31,7 +31,7 @@ export default defineComponent({
         formValid(): Boolean {
             return Boolean(this.task.description.length > 5)
         },
-        getValueTextarea(value: any): String {
+        getValueTextarea(value: String): String {
             return this.task.description = value
 
         },

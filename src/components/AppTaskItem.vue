@@ -6,10 +6,10 @@
             <AppButton class="task__button-complete" @click="showComment">Выполнить</AppButton>
         </div>
         <div class="task__comment" v-else>
-            <AppInput type="text" class="task__comment-input" />
+            <AppInput type="text" class="task__comment-input" v-model="taskComment" :value="taskComment"/>
             <div class="task__comment-wrapper">
                 <AppButton type="button" class="button task__comment-button" @click="hideComment">Отменить</AppButton>
-                <AppButton type="button" class="button task__comment-button">Завершить задачу</AppButton>
+                <AppButton type="button" class="button task__comment-button" @click="completedTask">Завершить задачу</AppButton>
             </div>
         </div>
         <button class="task__button task__button-remove" @click="removeTask"></button>
@@ -20,6 +20,7 @@
 <script lang="ts">
 import { PropType, defineComponent } from 'vue'
 import Task from '../types/Task';
+import TaskCompleted from '../types/TaskCompleted';
 
 export default defineComponent({
     data() {
@@ -46,11 +47,21 @@ export default defineComponent({
         },
         showPopupEditTask() {
             this.$emit("showPopupEditTask", this.task.id)
-        }
-    },
+        },
+        completedTask() {
+            this.$emit('completedTask', {
+                id: String(this.task.id),
+                description: this.task.description,
+                comment: this.taskComment,
+                dateCompleted: (new Date()).toLocaleString("en-GB")
+
+            } )
+        },
+    },  
     emits: {
         removeTask: (id: String) => String(id),
         showPopupEditTask: (id: String) => String(id),
+        completedTask: (data: TaskCompleted) => data
     }
 })
 
