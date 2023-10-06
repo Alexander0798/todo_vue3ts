@@ -1,14 +1,14 @@
-import { createApp } from 'vue'
-import { VueCookieNext } from 'vue-cookie-next'
-import './style.css'
-import App from './App.vue'
-import components from "./components/UI"
+import { createApp } from "vue";
+import { VueCookieNext } from "vue-cookie-next";
+import "./style.css";
+import App from "./App.vue";
+import components from "./components/UI";
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(VueCookieNext)
+app.use(VueCookieNext);
 
-components.forEach(component => app.component(component.name, component))
+components.forEach((component) => app.component(component.name, component));
 
-app.mount('#app')
-VueCookieNext.config({ expire: '7d' })
+app.mount("#app");
+VueCookieNext.config({ expire: "7d" });

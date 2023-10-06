@@ -1,1 +1,1 @@
-export type Filter = "active" | "overdue" | "current" | "completed" 
+export type Filter = "active" | "overdue" | "current" | "completed";

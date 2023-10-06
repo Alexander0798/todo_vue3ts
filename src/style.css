@@ -27,7 +27,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-size: 16px
+  font-size: 16px;
 }
 
 h1 {
@@ -35,20 +35,15 @@ h1 {
   line-height: 1.1;
 }
 
-
-
 /* button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 } */
 
-
-
 #app {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  
 }
 
 @media (prefers-color-scheme: light) {
