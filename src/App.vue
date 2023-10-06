@@ -132,7 +132,7 @@ export default defineComponent({
           return this.sort(
             this.tasks.filter((task) => {
               if (!task.completed) {
-              return this.filterTaskCurrent(Number(task.deadline));
+                return this.filterTaskCurrent(Number(task.deadline));
               }
             }),
           );
@@ -173,7 +173,7 @@ export default defineComponent({
       );
       const taskTimeUnix: number = taskHour * 3600 + taskMinutes * 60;
 
-      if (currentDate === taskDate && currentTimeUnix - taskTimeUnix < 0 ) {
+      if (currentDate === taskDate && currentTimeUnix - taskTimeUnix < 0) {
         return true;
       }
       return false;

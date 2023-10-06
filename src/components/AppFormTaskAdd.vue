@@ -1,24 +1,39 @@
 <template>
   <AppForm class="form" @submit.prevent="create">
-    <AppLabel :showError="v$.task.description.$error" :errorMessage="'Минимум 10 символов'">
-      <textarea class="form__textarea" v-on:input="v$.task.description.$touch" :class="{
-        input_error: v$.task.description.$error,
-        input_valid: !v$.task.description.$invalid,
-      }" @input="getValueTextarea(($event.target as HTMLInputElement).value)"
-        placeholder="ВВедите текст задачи"></textarea>
+    <AppLabel
+      :showError="v$.task.description.$error"
+      :errorMessage="'Минимум 10 символов'"
+    >
+      <textarea
+        class="form__textarea"
+        v-on:input="v$.task.description.$touch"
+        :class="{
+          input_error: v$.task.description.$error,
+          input_valid: !v$.task.description.$invalid,
+        }"
+        @input="getValueTextarea(($event.target as HTMLInputElement).value)"
+        placeholder="ВВедите текст задачи"
+      ></textarea>
     </AppLabel>
-    <AppLabel :showError="v$.task.deadlineDate.$invalid" :errorMessage="'Дата обязательна к заполнению'">
+    <AppLabel
+      :showError="v$.task.deadlineDate.$invalid"
+      :errorMessage="'Дата обязательна к заполнению'"
+    >
       <div class="form__container">
-        <AppInput class="form__input" type="date" v-model="task.deadlineDate"
+        <AppInput
+          class="form__input"
+          type="date"
+          v-model="task.deadlineDate"
           :class="{
             input_error: v$.task.deadlineDate.$invalid,
             input_valid: !v$.task.deadlineDate.$invalid,
-          }" />
+          }"
+        />
         <AppInput class="form__input" type="time" v-model="task.deadlineTime" />
       </div>
     </AppLabel>
-    <AppButton class="form__button" :disabled="v$.task.$invalid">Создать
-      задачу
+    <AppButton class="form__button" :disabled="v$.task.$invalid"
+      >Создать задачу
     </AppButton>
   </AppForm>
 </template>
@@ -100,6 +115,7 @@ export default defineComponent({
     gap: 0 20px;
   }
 
-  &__button {}
+  &__button {
+  }
 }
 </style>

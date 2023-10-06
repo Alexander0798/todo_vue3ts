@@ -1,16 +1,30 @@
 <template>
   <AppForm class="form" @submit.prevent="edit">
     <AppLabel :showError="false" :errorMessage="'Задача не изменина'">
-      <textarea class="form__textarea"
-        @input="getValueTextarea(($event.target as HTMLInputElement).value)">{{ task.description }}</textarea>
+      <textarea
+        class="form__textarea"
+        @input="getValueTextarea(($event.target as HTMLInputElement).value)"
+        >{{ task.description }}</textarea
+      >
     </AppLabel>
     <AppLabel :showError="validity()" :errorMessage="'Задача не изменина'">
       <div class="form__container">
-        <AppInput class="form__input" type="date" v-model="task.deadlineDate" :value="task.deadlineDate" />
-        <AppInput class="form__input" type="time" v-model="task.deadlineTime" :value="task.deadlineTime" />
+        <AppInput
+          class="form__input"
+          type="date"
+          v-model="task.deadlineDate"
+          :value="task.deadlineDate"
+        />
+        <AppInput
+          class="form__input"
+          type="time"
+          v-model="task.deadlineTime"
+          :value="task.deadlineTime"
+        />
       </div>
     </AppLabel>
-    <AppButton class="form__button" :disabled="validity()">Изменить задачу
+    <AppButton class="form__button" :disabled="validity()"
+      >Изменить задачу
     </AppButton>
   </AppForm>
 </template>
@@ -58,8 +72,7 @@ export default defineComponent({
     validity(): boolean {
       const staticTask: string = JSON.stringify(this.taskEdit);
       const currentTask: string = JSON.stringify(this.getModifiedTask());
-      return staticTask === currentTask
-
+      return staticTask === currentTask;
     },
     getModifiedTask(): Task {
       return {
@@ -107,6 +120,7 @@ export default defineComponent({
     gap: 0 20px;
   }
 
-  &__button {}
+  &__button {
+  }
 }
 </style>

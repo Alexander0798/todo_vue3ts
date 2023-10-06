@@ -1,6 +1,11 @@
 <template>
-  <div class="popup" v-if="show" v-on:keyup.27="hidePopup" @click.stop="hidePopup">
-    <div @click.stop  class="popup__content">
+  <div
+    class="popup"
+    v-if="show"
+    v-on:keyup.27="hidePopup"
+    @click.stop="hidePopup"
+  >
+    <div @click.stop class="popup__content">
       <slot></slot>
     </div>
   </div>
@@ -22,17 +27,17 @@ export default defineComponent({
       this.$emit("update:show", false);
     },
     hidePopupEsc(evt: KeyboardEvent) {
-      if (this.show && evt.key === 'Escape') {
+      if (this.show && evt.key === "Escape") {
         this.hidePopup();
       }
-    }
+    },
   },
   mounted() {
-    window.addEventListener('keydown', this.hidePopupEsc);
+    window.addEventListener("keydown", this.hidePopupEsc);
   },
   destroy() {
-    window.removeEventListener('keydown', this.hidePopupEsc);
-  }
+    window.removeEventListener("keydown", this.hidePopupEsc);
+  },
 });
 </script>
 

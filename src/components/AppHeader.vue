@@ -13,7 +13,9 @@
       >
     </div>
     <div class="header__container" v-else>
-      <h2 class="header__subtitle">{{ user.name.length > 10 ? user.name.slice(0, 10) + "..." : user.name}}</h2>
+      <h2 class="header__subtitle">
+        {{ user.name.length > 10 ? user.name.slice(0, 10) + "..." : user.name }}
+      </h2>
       <AppButton class="header__button-exit" @click="exitUser">Выйти</AppButton>
     </div>
   </header>
