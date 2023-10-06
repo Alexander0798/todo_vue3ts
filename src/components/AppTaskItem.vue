@@ -40,7 +40,7 @@
       @click="removeTask"
     ></button>
     <button
-      class="button task__button task__button-edit"
+      class="task__button task__button-edit"
       @click="showPopupEditTask"
     ></button>
   </li>
