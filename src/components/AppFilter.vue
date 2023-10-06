@@ -56,8 +56,8 @@ export default defineComponent({
 <style lang="scss">
 .filter {
   display: flex;
-
-  gap: 0 10px;
+  flex-wrap: wrap;
+  gap: 10px 10px;
 
   &__button_active {
     color: white;

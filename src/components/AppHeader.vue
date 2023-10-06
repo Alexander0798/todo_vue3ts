@@ -13,7 +13,7 @@
       >
     </div>
     <div class="header__container" v-else>
-      <h2 class="header__subtitle">{{ user.name }}</h2>
+      <h2 class="header__subtitle">{{ user.name.slice(0, 10) + "..." }}</h2>
       <AppButton class="header__button-exit" @click="exitUser">Выйти</AppButton>
     </div>
   </header>
@@ -54,7 +54,7 @@ export default defineComponent({
   padding-bottom: 10px;
   margin-bottom: 20px;
   border-bottom: 1px solid #ccc;
-
+  gap: 0 10px;
   &__title {
     margin: 0 0 0 80px;
     font-size: 32px;
@@ -65,8 +65,38 @@ export default defineComponent({
 
   &__container {
     display: flex;
-    gap: 0 20px;
+    gap: 10px 20px;
     align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    display: grid;
+    grid-template-areas:
+      "title login"
+      "addTask login";
+
+    align-items: end;
+    gap: 10px;
+    &__title {
+      margin: 0 0 0 0;
+      font-size: 24px;
+    }
+    &__subtitle {
+      font-size: 20px;
+    }
+    &__button-add {
+      grid-area: addTask;
+    }
+
+    &__container {
+      grid-area: login;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
   }
 }
 </style>

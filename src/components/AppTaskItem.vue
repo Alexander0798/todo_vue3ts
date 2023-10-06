@@ -122,6 +122,7 @@ export default defineComponent({
   &__description {
     margin: 0 0 15px;
     max-width: 900px;
+    padding-right: 80px;
     text-wrap: wrap;
     overflow: hidden;
   }
@@ -134,6 +135,7 @@ export default defineComponent({
 
   &__deadline {
     display: inline-block;
+    padding-right: 10px;
   }
 
   &__button {

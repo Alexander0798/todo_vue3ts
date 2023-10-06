@@ -64,9 +64,11 @@ export default defineComponent({
   }
 
   &__completed-deadline {
+    padding-right: 10px;
   }
 
   &__completed-back {
+    min-width: 80px !important;
   }
 }
 </style>
