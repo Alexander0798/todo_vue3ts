@@ -1,13 +1,14 @@
 import Task from "./Task";
 import { Filter } from "./Filter";
-import TaskCompleted from "./TaskCompleted";
+import User from "./User";
+
 export default interface AppState {
+    user: User | null;
     tasks: Task[];
-    tasksCompleted: TaskCompleted[]
     taskEdit: Task;
     popupEditTask: Boolean;
     popupAddTask: Boolean;
     popupSignUp: Boolean;
     popupSignIn: Boolean;
-    filter: Filter 
+    filter: Filter
 }

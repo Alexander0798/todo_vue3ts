@@ -1,6 +1,6 @@
 interface User {
-    email: String,
-    password: String
+    email: string,
+    password: string
 }
 export default interface SignIn {
     user: User

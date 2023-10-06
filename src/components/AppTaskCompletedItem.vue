@@ -2,7 +2,8 @@
     <li class="task__completed-item">
         <p class="task__completed-description">{{ taskCompleted.description }}</p>
         <p class="task__completed-comment">{{ taskCompleted.comment }}</p>
-        <div class="task__completed-container"> <span class="task__completed-deadline">{{ `задача завершина ${taskCompleted.dateCompleted}` }}</span>
+        <div class="task__completed-container"> <span class="task__completed-deadline">{{ `задача завершина
+                ${taskCompleted.completedDate}` }}</span>
             <AppButton class="task__completed-back">Отменить</AppButton>
         </div>
     </li>
@@ -10,22 +11,24 @@
 
 <script lang="ts">
 import { PropType, defineComponent } from 'vue'
-import TaskCompleted from '../types/TaskCompleted';
+import Task from '../types/Task';
 
-export default defineComponent({  
+export default defineComponent({
     props: {
         taskCompleted: {
-            type: Object as PropType<TaskCompleted>,
+            type: Object as PropType<Task>,
             required: true
         }
     },
     methods: {
-  
-    
-        
+        backTaskCompleted() {
+            this.$emit('backTaskCompleted', this.taskCompleted)
+        }
+
+
     },
     emits: {
-     
+
     }
 })
 
@@ -34,89 +37,33 @@ export default defineComponent({
 <style lang="scss">
 .task {
 
-    &__item {
+    &__completed-item {
         border: 1px solid rebeccapurple;
         padding: 10px;
-        position: relative;
     }
 
-    &__description {
+    &__completed-description {
         margin: 0 0 15px;
         max-width: 900px;
         text-wrap: wrap;
         overflow: hidden;
     }
 
-    &__container {
+    &__completed-comment {
+        padding-left: 20px;
+        margin: 0 0 10px;
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    &__completed-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    &__deadline {
-        display: inline-block;
-    }
+    &__completed-deadline {}
 
-    &__button {
-        outline: none;
-        border: none;
-        cursor: pointer;
-    }
-
-    &__comment {
-        display: flex;
-        flex-direction: column;
-        gap: 10px 0;
-    }
-
-    &__comment-input {
-        display: block;
-        min-height: 30px;
-        border-radius: 20px;
-        padding: 10px 15px !important;
-        border: 1px solid #ccc;
-
-    }
-
-    &__comment-wrapper {
-        align-self: flex-end;
-        display: flex;
-        gap: 0 10px;
-    }
-
-    &__comment-button {}
-
-    &__button-remove {
-        width: 15px;
-        height: 15px;
-        background: center / contain no-repeat url("../assets/remove.svg");
-        opacity: 0.3;
-        position: absolute;
-        right: 10px;
-        top: 10px;
-
-        &:hover {
-            opacity: 1;
-        }
-    }
-
-    &__button-edit {
-        width: 15px;
-        height: 15px;
-        background: center / contain no-repeat url("../assets/edit.svg");
-        opacity: 0.3;
-        position: absolute;
-        right: 30px;
-        top: 10px;
-
-        &:hover {
-            opacity: 1;
-        }
-    }
-
-    .button {}
-
-
-    &__button-complete {}
+    &__completed-back {}
 }
 </style>

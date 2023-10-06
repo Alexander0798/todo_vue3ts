@@ -1,15 +1,17 @@
 <template>
     <li class="task__item">
         <p class="task__description">{{ task.description }}</p>
-        <div class="task__container" v-if="!showTaskComment"> <span class="task__deadline">{{ `${task.deadlineDate}
-                        ${task.deadlineTime}` }}</span>
+        <div class="task__container" v-if="!showTaskComment"> <span class="task__deadline">{{ `${(new
+            Date(Number(task.deadline) * 1000)).toLocaleString("en-GB")}
+                ` }}</span>
             <AppButton class="task__button-complete" @click="showComment">Выполнить</AppButton>
         </div>
         <div class="task__comment" v-else>
-            <AppInput type="text" class="task__comment-input" v-model="taskComment" :value="taskComment"/>
+            <AppInput type="text" class="task__comment-input" v-model="taskComment" :value="taskComment" />
             <div class="task__comment-wrapper">
                 <AppButton type="button" class="button task__comment-button" @click="hideComment">Отменить</AppButton>
-                <AppButton type="button" class="button task__comment-button" @click="completedTask">Завершить задачу</AppButton>
+                <AppButton type="button" class="button task__comment-button" @click="completedTask">Завершить задачу
+                </AppButton>
             </div>
         </div>
         <button class="task__button task__button-remove" @click="removeTask"></button>
@@ -20,7 +22,6 @@
 <script lang="ts">
 import { PropType, defineComponent } from 'vue'
 import Task from '../types/Task';
-import TaskCompleted from '../types/TaskCompleted';
 
 export default defineComponent({
     data() {
@@ -52,16 +53,18 @@ export default defineComponent({
             this.$emit('completedTask', {
                 id: String(this.task.id),
                 description: this.task.description,
+                deadline: this.task.deadline,
+                completed: true,
                 comment: this.taskComment,
-                dateCompleted: (new Date()).toLocaleString("en-GB")
+                completedDate: (new Date()).toLocaleString("en-GB")
 
-            } )
+            })
         },
-    },  
+    },
     emits: {
-        removeTask: (id: String) => String(id),
-        showPopupEditTask: (id: String) => String(id),
-        completedTask: (data: TaskCompleted) => data
+        removeTask: (id: string) => String(id),
+        showPopupEditTask: (id: string) => String(id),
+        completedTask: (data: Task) => data
     }
 })
 
@@ -109,9 +112,9 @@ export default defineComponent({
         display: block;
         min-height: 30px;
         border-radius: 20px;
-        padding: 10px 15px !important ;
+        padding: 10px 15px !important;
         border: 1px solid #ccc;
-        
+
     }
 
     &__comment-wrapper {
@@ -142,8 +145,9 @@ export default defineComponent({
         background: center / contain no-repeat url("../assets/edit.svg");
         opacity: 0.3;
         position: absolute;
-        right: 30px;
+        right: 40px;
         top: 10px;
+        transition: all 0.2s;
 
         &:hover {
             opacity: 1;
@@ -154,5 +158,4 @@ export default defineComponent({
 
 
     &__button-complete {}
-}
-</style>
+}</style>

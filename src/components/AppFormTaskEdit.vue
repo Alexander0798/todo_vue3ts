@@ -22,8 +22,10 @@ export default defineComponent({
         return {
             task: {
                 description: this.taskEdit.description,
-                deadlineDate: this.taskEdit.deadlineDate,
-                deadlineTime: this.taskEdit.deadlineTime
+                deadlineDate: ((new
+                    Date(Number(this.taskEdit.deadline) * 1000)).toISOString()).split("T")[0],
+                deadlineTime: ((new
+                    Date(Number(this.taskEdit.deadline) * 1000)).toLocaleString("en-GB")).split(", ")[1]
             }
         }
     },
@@ -35,7 +37,7 @@ export default defineComponent({
     },
     methods: {
         formValid(): Boolean {
-            if (this.task.description !== this.taskEdit.description || this.task.deadlineDate !== this.taskEdit.deadlineDate || this.task.deadlineTime !== this.taskEdit.deadlineTime) {
+            if (this.task.description !== this.taskEdit.description || this.task.deadlineDate !== this.taskEdit.deadline || this.task.deadlineTime !== this.taskEdit.deadline) {
                 return true
             }
             return false
@@ -47,7 +49,11 @@ export default defineComponent({
         edit() {
             this.$emit('editTask', {
                 id: this.taskEdit.id,
-                ...this.task
+                description: this.taskEdit.description,
+                deadline: String(new Date(`${this.task.deadlineDate} ${this.task.deadlineTime}`).getTime() /1000),
+                completed: false,
+                comment: '',
+                completedDate: ''
             })
             this.task = {
                 description: '',

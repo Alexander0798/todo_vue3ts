@@ -1,6 +1,6 @@
-
 <template>
-  <AppMenu @showPopupSignUp="showPopupSignUp" @showPopupAddTask="showPopupAddTask" @showPopupSignIn="showPopupSignIn" />
+  <AppHeader :user="user" @exitUser="exitUser" @showPopupSignUp="showPopupSignUp" @showPopupAddTask="showPopupAddTask"
+    @showPopupSignIn="showPopupSignIn" />
   <AppPopup v-model:show="popupAddTask">
     <AppFormTaskAdd name="app-form-task-add" @createTask="addTask" />
   </AppPopup>
@@ -14,17 +14,25 @@
     <AppFormTaskEdit name="app-form-task-edit" @editTask="editTask" v-bind:taskEdit="taskEdit" />
   </AppPopup>
   <AppFilter :filter="filter" @setFilter="setFilter" />
-  <AppTaskList>
-    <AppTaskItem v-if="filter !== 'completed'" v-for="task in taskFilter" :key="String(task.id)" :id="`${task.id}`"
-      :task="task" @removeTask="removeTask" @showPopupEditTask="showPopupEditTask" @completedTask="completedTask" />
-    <AppTaskCompletedItemVue v-else v-for="taskCompleted in tasksCompleted" :key="String(taskCompleted.id)"
-      :id="`${taskCompleted.id}`" :taskCompleted="taskCompleted" />
-  </AppTaskList>
+  <main class="main">
+    <h2 class="main__title" v-if="!user">Необходимо войти в профиль или Зарегистрироваться</h2>
+    <h2 class="main__title" v-if="user && filter !== 'completed' && !taskFilter.length">Нет активных задач</h2>
+    <h2 class="main__title" v-if="user && filter === 'completed' && !taskFilter.length">Нет завершенных задач</h2>
+    <div class="main__task task">
+      <AppTaskList>
+        <AppTaskItem v-if="filter !== 'completed'" v-for="task in taskFilter" :key="String(task.id)" :id="`${task.id}`"
+          :task="task" @removeTask="removeTask" @showPopupEditTask="showPopupEditTask" @completedTask="completedTask" />
+        <AppTaskCompletedItemVue v-else v-for="taskCompleted in taskFilter" :key="String(taskCompleted.id)"
+          :id="`${taskCompleted.id}`" :taskCompleted="taskCompleted" />
+      </AppTaskList>
+    </div>
+  </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AppMenu from "./components/AppMenu.vue"
+
+import AppHeader from "./components/AppHeader.vue"
 import AppFormTaskAdd from "./components/AppFormTaskAdd.vue";
 import AppFormSignUp from "./components/AppFormSignUp.vue"
 import AppFormSignIn from "./components/AppFormSignIn.vue"
@@ -33,21 +41,25 @@ import AppFormTaskEdit from "./components/AppFormTaskEdit.vue";
 import AppFilter from './components/AppFilter.vue';
 import AppTaskItem from './components/AppTaskItem.vue';
 import AppTaskCompletedItemVue from './components/AppTaskCompletedItem.vue'
+
 import Task from './types/Task'
 import SignUp from './types/SignUp'
 import SignIn from "./types/SignIn";
 import AppState from "./types/AppState"
+import User from './types/User';
 import { Filter } from './types/Filter';
-import TaskCompleted from './types/TaskCompleted';
+
 export default defineComponent({
   data(): AppState {
     return {
+      user: null,
       tasks: [],
-      tasksCompleted: [],
       taskEdit: {
         description: '',
-        deadlineDate: '',
-        deadlineTime: '',
+        deadline: '',
+        comment: '',
+        completed: false,
+        completedDate: '',
         id: ''
       },
       popupEditTask: false,
@@ -57,7 +69,7 @@ export default defineComponent({
       filter: "active",
     }
   },
-  components: { AppMenu, AppFormTaskAdd, AppFormSignUp, AppFormSignIn, AppTaskList, AppFormTaskEdit, AppFilter, AppTaskItem, AppTaskCompletedItemVue },
+  components: { AppHeader, AppFormTaskAdd, AppFormSignUp, AppFormSignIn, AppTaskList, AppFormTaskEdit, AppFilter, AppTaskItem, AppTaskCompletedItemVue },
   computed: {
     taskFilter(): Task[] {
       const currentDate = new Date()
@@ -66,7 +78,7 @@ export default defineComponent({
       switch (this.filter) {
         case "overdue":
           return this.tasks.filter(task => {
-            const date = Date.parse(`${task.deadlineDate}T${task.deadlineTime}`) / 1000
+            const date = Date.parse(`${task.deadline}`) / 1000
             const overdue = date - currentTimeUnix
             if (overdue < 0) {
               return task
@@ -74,41 +86,61 @@ export default defineComponent({
           })
         case "current":
           return this.tasks.filter(task => {
-            if (currentDate.toDateString() === new Date(String(task.deadlineDate)).toDateString() &&
-              (Boolean(currentTime - ((Number(task.deadlineTime.split(':')[0])) * 1000) + (Number(task.deadlineTime.split(':')[1]) * 1000)))) {
+            if (currentDate.toDateString() === new Date(String(task.deadline)).toDateString() &&
+              (Boolean(currentTime))) {
               return task
             }
           })
+        case "completed":
+          return this.tasks.filter(task => task.completed)
         case "active":
         default:
-          return this.tasks
+          return this.tasks.filter(task => !task.completed)
       }
     }
   },
   methods: {
-    addTask(task: Task) {
-      console.log(task)
-      this.tasks.push(task)
+    addTask(data: Task) {
+      console.log(data)
+      this.tasks.push(data)
       this.popupAddTask = false
+      this.setTask(data)
     },
-    editTask(task: Task) {
-      this.removeTask(task.id)
-      this.tasks.push(task)
+    completedTask(data: Task) {
+      this.removeTask(data.id)
+      this.addTask(data)
+      console.log(this.tasks)
+    },
+    backTaskCompleted(data: Task) {
+      console.log(data)
+    },  
+    editTask(data: Task) {
+      this.removeTask(data.id)
+      this.tasks.push(data)
       this.popupEditTask = false
+      this.pathTask(data)
     },
-    removeTask(id: String) {
+    removeTask(id: string) {
       this.tasks = this.tasks.filter(task => task.id !== id)
+      this.deleteTask(id)
     },
-    signUp(newUser: SignUp) {
-      console.log(newUser)
-      this.$cookie.setCookie('user', JSON.stringify(newUser));
+    signUp(data: SignUp) {
+      const user: User = {
+        name: data.newUser.name,
+        id: String(Date.now()),
+        token: String(Date.now())
+      }
+      this.setCookie('user', user)
+      this.user = user
       this.popupSignUp = false
-      console.log(this.$cookie.getCookie('user'))
+
     },
-    signIn(user: SignIn) {
-      console.log(user)
+    signIn(data: SignIn) {
+      console.log(data)
       this.popupSignIn = false
     },
+// показ попапов
+
     showPopupAddTask() {
       this.popupAddTask = true
     },
@@ -118,7 +150,7 @@ export default defineComponent({
     showPopupSignIn() {
       this.popupSignIn = true
     },
-    showPopupEditTask(id: String) {
+    showPopupEditTask(id: string) {
       const targetTask = JSON.parse(JSON.stringify(this.tasks.find(task => task.id === id)))
       this.taskEdit = { ...targetTask }
       this.popupEditTask = true
@@ -126,10 +158,65 @@ export default defineComponent({
     setFilter(activeFilter: Filter) {
       this.filter = activeFilter
     },
-    completedTask(data: TaskCompleted) {
-      this.tasksCompleted.push(data)
-      this.removeTask(data.id)
+
+    // api
+    getTask() {
+      const tasks: Task[] = JSON.parse(this.$cookie.getCookie('tasks'))
+      console.log(tasks)
+      if (tasks) {
+        this.tasks = tasks
+      }
+    },
+
+
+    removeCookie(key: string) {
+      const targetCookie: Boolean = this.$cookie.isCookieAvailable(key)
+      console.log(targetCookie)
+      if (targetCookie) {
+        this.$cookie.removeCookie(key)
+      }
+    },
+    async setCookie(key: string, data: any) {
+      this.$cookie.setCookie(key, JSON.stringify(data));
+    },
+    setTask(task: Task) {
+      this.removeCookie('tasks')
+      this.setCookie('tasks', this.tasks)
+      console.log(task)
+   
+    },
+
+    deleteTask(id: string) {
+      this.removeCookie('tasks')
+      this.setCookie('tasks', this.tasks)
+      console.log(id)
+    },
+    deleteTaskCompleted(id: string) {
+      this.removeCookie('tasksCompleted')
+      this.setCookie('tasksCompleted', this.tasks)
+      console.log(id)
+    },
+    pathTask(data: Task) {
+      this.removeCookie('tasks')
+      this.setCookie('tasks', this.tasks)
+      console.log(data)
+    },
+    exitUser() {
+      this.user = null
+      this.tasks = []
+      this.removeCookie('user')
+      this.removeCookie('tasks')
+      this.removeCookie('tasksCompleted')
     }
+  },
+  async mounted() {
+    const user: User = this.$cookie.getCookie('user')
+    if (user) {
+      this.user = user
+      this.getTask()
+    }
+
+
   }
 })
 </script>

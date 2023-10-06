@@ -18,6 +18,9 @@ export default defineComponent({
     &__list {
         list-style-type: none;
         padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px 0;
     }
 }
 </style>

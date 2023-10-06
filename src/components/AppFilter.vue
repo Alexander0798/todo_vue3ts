@@ -38,7 +38,7 @@ export default defineComponent({
 
     &__button_active {
         color: white; 
-        background-color: rgba(102, 51, 153, 0.651) ;
+        background-color: rgba(102, 51, 153, 0.651) !important;
     }
 
     &__button {}

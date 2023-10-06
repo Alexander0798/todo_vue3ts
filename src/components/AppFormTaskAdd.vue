@@ -1,6 +1,7 @@
 <template>
     <AppForm class="form" @submit.prevent="create">
-        <textarea class="form__textarea" @input="getValueTextarea(($event.target as HTMLInputElement).value)" placeholder="ВВедите текст задачи"></textarea>
+        <textarea class="form__textarea" @input="getValueTextarea(($event.target as HTMLInputElement).value)"
+            placeholder="ВВедите текст задачи"></textarea>
         <div class="form__container">
             <AppInput class="form__input" type="date" v-model="task.deadlineDate" />
             <AppInput class="form__input" type="time" v-model="task.deadlineTime" />
@@ -11,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent} from 'vue'
+import { defineComponent } from 'vue'
 
 import Task from '../types/Task'
 import TaskState from '../types/TaskState'
@@ -22,23 +23,31 @@ export default defineComponent({
             task: {
                 description: '',
                 deadlineDate: '',
-                deadlineTime: ''
+                deadlineTime: '' 
             }
         }
     },
 
     methods: {
-        formValid(): Boolean {
+        formValid(): boolean {
             return Boolean(this.task.description.length > 5)
         },
-        getValueTextarea(value: String): String {
+        getValueTextarea(value: string): string {
             return this.task.description = value
 
         },
         create() {
+            if (!this.task.deadlineTime) {
+                this.task.deadlineTime = '23:59'
+            }
             this.$emit('createTask', {
                 id: String(Date.now()),
-                ...this.task
+                description: this.task.description,
+                deadline: String(new Date(`${this.task.deadlineDate} ${this.task.deadlineTime}`).getTime() /1000),
+                completed: false,
+                completedDate: '',
+                comment: '',
+
             })
             this.task = {
                 description: '',
@@ -48,7 +57,7 @@ export default defineComponent({
         },
 
     },
-   
+
     emits: {
         createTask: (task: Task) => task
     }
