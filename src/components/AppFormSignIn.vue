@@ -1,41 +1,18 @@
 <template>
   <AppForm @submit.prevent="create">
-    <AppLabel
-      :showError="v$.user.email.$invalid"
-      :errorMessage="'Не корректный E-mail'"
-    >
-      <AppInput
-        class="form__input"
-        :class="{
-          input_error: v$.user.email.$invalid,
-          input_valid: !v$.user.email.$invalid,
-        }"
-        type="email"
-        placeholder="Введите email"
-        v-model="user.email"
-      />
+    <AppLabel :showError="v$.user.email.$error" :errorMessage="'Не корректный E-mail'">
+      <AppInput class="form__input" v-on:input="v$.user.email.$touch" :class="{
+        input_error: v$.user.email.$error,
+        input_valid: !v$.user.email.$invalid,
+      }" type="email" placeholder="Введите email" v-model="user.email" />
     </AppLabel>
-    <AppLabel
-      :showError="v$.user.password.$invalid"
-      :errorMessage="'Короткий пароль'"
-    >
-      <AppInput
-        class="form__input"
-        :class="{
-          input_error: v$.user.password.$invalid,
-          input_valid: !v$.user.password.$invalid,
-        }"
-        type="password"
-        placeholder="Введите пароль"
-        autocomplete="on"
-        v-model="user.password"
-      />
+    <AppLabel :showError="v$.user.password.$error" :errorMessage="'Короткий пароль'">
+      <AppInput class="form__input" v-on:input="v$.user.password.$touch" :class="{
+        input_error: v$.user.password.$error,
+        input_valid: !v$.user.password.$invalid,
+      }" type="password" placeholder="Введите пароль" autocomplete="on" v-model="user.password" />
     </AppLabel>
-    <AppButton
-      class="form__button"
-      :class="v$.user.$invalid ? 'disabled' : ''"
-      :disabled="v$.user.$invalid"
-      >Войти
+    <AppButton class="form__button" :disabled="v$.user.$invalid">Войти
     </AppButton>
   </AppForm>
 </template>

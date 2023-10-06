@@ -29,15 +29,17 @@ export default defineComponent({
     opacity: 1;
     box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 
-    &:hover {
-      opacity: 0.8;
-    }
   }
 
-  .disabled {
+  &:disabled {
     cursor: not-allowed;
     border: 1px solid #cccc;
     background-color: #cccc;
   }
+
+  &:hover {
+    opacity: 0.8;
+  }
+
 }
 </style>

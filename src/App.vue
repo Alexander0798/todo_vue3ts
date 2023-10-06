@@ -123,15 +123,17 @@ export default defineComponent({
         case "overdue":
           return this.sort(
             this.tasks.filter((task) => {
-              if (this.filterTaskOverdue(Number(task.deadline))) {
-                return task;
+              if (!task.completed) {
+                return this.filterTaskOverdue(Number(task.deadline));
               }
             }),
           );
         case "current":
           return this.sort(
             this.tasks.filter((task) => {
+              if (!task.completed) {
               return this.filterTaskCurrent(Number(task.deadline));
+              }
             }),
           );
         case "completed":
@@ -171,7 +173,7 @@ export default defineComponent({
       );
       const taskTimeUnix: number = taskHour * 3600 + taskMinutes * 60;
 
-      if (currentDate === taskDate && currentTimeUnix - taskTimeUnix < 0) {
+      if (currentDate === taskDate && currentTimeUnix - taskTimeUnix < 0 ) {
         return true;
       }
       return false;
@@ -296,8 +298,7 @@ export default defineComponent({
 <style lang="scss">
 .main {
   &__title {
-    margin-top: 50px;
-    text-align: center;
+    margin: 50px 0 0 50px;
   }
 }
 </style>

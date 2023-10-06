@@ -1,44 +1,32 @@
 <template>
   <AppForm class="form" @submit.prevent="edit">
     <AppLabel :showError="false" :errorMessage="'Задача не изменина'">
-      <textarea
-        class="form__textarea"
-        @input="getValueTextarea(($event.target as HTMLInputElement).value)"
-        >{{ task.description }}</textarea
-      >
+      <textarea class="form__textarea"
+        @input="getValueTextarea(($event.target as HTMLInputElement).value)">{{ task.description }}</textarea>
     </AppLabel>
     <AppLabel :showError="validity()" :errorMessage="'Задача не изменина'">
       <div class="form__container">
-        <AppInput
-          class="form__input"
-          type="date"
-          v-model="task.deadlineDate"
-          :value="task.deadlineDate"
-        />
-        <AppInput
-          class="form__input"
-          type="time"
-          v-model="task.deadlineTime"
-          :value="task.deadlineTime"
-        />
+        <AppInput class="form__input" type="date" v-model="task.deadlineDate" :value="task.deadlineDate" />
+        <AppInput class="form__input" type="time" v-model="task.deadlineTime" :value="task.deadlineTime" />
       </div>
     </AppLabel>
-    <AppButton
-      class="form__button"
-      :class="{ disabled: validity() }"
-      :disabled="validity()"
-      >Изменить задачу
+    <AppButton class="form__button" :disabled="validity()">Изменить задачу
     </AppButton>
   </AppForm>
 </template>
 
 <script lang="ts">
 import { PropType, defineComponent } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, minLength } from "@vuelidate/validators";
 
 import Task from "../types/Task";
 import TaskState from "../types/TaskState";
 
 export default defineComponent({
+  setup() {
+    return { v$: useVuelidate() };
+  },
   data(): TaskState {
     return {
       task: {
@@ -58,16 +46,20 @@ export default defineComponent({
       required: true,
     },
   },
+  validations() {
+    return {
+      task: {
+        description: { minLength: minLength(10), required },
+        deadlineDate: { required },
+      },
+    };
+  },
   methods: {
     validity(): boolean {
       const staticTask: string = JSON.stringify(this.taskEdit);
       const currentTask: string = JSON.stringify(this.getModifiedTask());
-      console.log(staticTask);
-      console.log(currentTask);
-      if (staticTask === currentTask) {
-        return true;
-      }
-      return false;
+      return staticTask === currentTask
+
     },
     getModifiedTask(): Task {
       return {
@@ -115,7 +107,6 @@ export default defineComponent({
     gap: 0 20px;
   }
 
-  &__button {
-  }
+  &__button {}
 }
 </style>

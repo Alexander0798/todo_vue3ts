@@ -25,6 +25,7 @@ export default defineComponent({
 
 <style lang="scss">
 .input {
+  border: 1px solid #cccc;
   outline: none;
   padding: 6px;
   &_error {
